@@ -1,0 +1,54 @@
+<script src="http://code.jquery.com/jquery-3.1.1.js"></script>
+<script src="secret.js"></script>
+<script src="jaflfmdb.js"></script>
+<link rel="stylesheet" href="jaflfmdb.css">   
+    
+<html>
+    <head>
+        <title>JAFLFDB</title>
+        <link rel="icon" type="image/png" href='./images/jaflfmdb.png'>
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+    </head>
+<body id='thebody'>
+    <div class="headercontainer">
+        <img id='avatarimg' src="./images/static_noise.gif" class="avatar">
+        <div id='lastfmuser' class="userdata">Unknown user</div>
+        <div class='stats'>
+            <div id="playcount" class='statsitem'></div><div class='statsitem'>Scrobbles, </div>
+            <div id="artist_userplaycount" class='statsitem'></div><div class='statsitem'>Artist scrobbles, </div>
+            <div id="album_userplaycount" class='statsitem'></div><div class='statsitem'>Album scrobbles, </div>
+            <div id="track_userplaycount" class='statsitem'></div><div class='statsitem'>Track scrobbles</div>
+            <div style="display: none;">
+                <div id="artist_count" class='statsitem'></div><div class='statsitem'>Unique Artists</div>
+                <div id="album_count" class='statsitem'></div><div class='statsitem'>Unique Albums</div>
+                <div id="track_count" class='statsitem'></div><div class='statsitem'>Unique Tracks</div>
+            </div>
+        </div>
+    </div>
+    
+    <div class="maincontainer">
+        <div class="trackinfogridcontainer">
+            <div>
+                <img id='albumimg' src="./images/static_noise.gif" class="responsive_album">
+            </div>
+            <div class="trackinfo">
+                <h1 id='track'>track</h1>
+                <h3 id='album'>album</h3>
+                <h2 id='artist'>artist</h2>
+                <div id='tagcontainer'></div>
+            </div>
+        </div>
+    </div>
+    <div style="display: none;">
+        <p id='artist_listeners'>artist_listeners</p> -
+        <p id='artist_playcount'>artist_playcount</p> -
+        <!-- <p id='artist_userplaycount'>artist_userplaycount</p> - -->
+        <p id='artist_userplaycount_percentage'>artist_userplaycount_percentage</p> %<br>
+        <div id='artistbio'>artist bio</div>
+
+        recenttracks_url <p id='recenttracks_url'></p><br>
+        artist_url <p id='artist_url'></p><br>
+    </div>
+
+</body>
+</html>

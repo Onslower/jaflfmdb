@@ -1,0 +1,102 @@
+.responsive {
+    width: 100%;
+    height: auto;
+}
+.headercontainer {
+    position: absolute;
+    top: 0px;
+    left: 0px;
+    right: 0px;
+    padding-left: 1vw;
+    padding-right: 1vw;
+    padding-top: 1vh;
+    padding-bottom: 1vh;
+}
+.avatar {
+    float: left;
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+}
+.userdata {
+    padding: 5px;
+    float: left;
+    font-size: calc((1vw + 1vh + 1vmin) / 3);
+}
+.responsive_album {
+    width: 100%;
+    min-width: 50px;
+    height: auto;
+    filter: drop-shadow(black 1vw 1vh 10px);
+}
+.maincontainer {
+    position: absolute;
+    bottom: 0px;
+    left: 0px;
+    right: 0px;
+    padding-left: 4vw;
+    padding-right: 4vw;
+    padding-top: 4vh;
+    padding-bottom: 4vh;
+}
+.trackinfogridcontainer {
+    display: grid;
+    grid-template-columns: 20% 80%;
+    z-index: 1;
+}
+.trackinfo {
+    display: inline-block;
+    padding-left: 2vw;
+    overflow-wrap: break-word;
+}
+h1 {
+    color: black;
+    text-shadow: 0 0 2px yellow, 0 0 4px orange, 0 0 8px red;
+    vertical-align: text-bottom;
+    font-size: 30px;
+    font-size: calc(1vw + 1vh + 1vmin);
+}
+h2 {
+    color: black;
+    text-shadow: 0 0 2px yellow, 0 0 4px orange, 0 0 8px red;
+    vertical-align: text-bottom;
+    font-size: 20px;
+    font-size: calc((1vw + 1vh + 1vmin) / 1.5);
+}
+h3 {
+    color: black;
+    text-shadow: 0 0 2px yellow, 0 0 4px orange, 0 0 8px red;
+    vertical-align: text-bottom;
+    font-size: 10px;
+    font-size: calc((1vw + 1vh + 1vmin) / 2);
+}
+body {
+    color: lightgrey;
+    background-color: black;
+    margin: 0;
+    font-family: Tahoma, Verdana, sans-serif;
+
+    background-image: url(./images/simple_pixel_tile.png), url(./images/vignette_001.png), url(./images/static_noise.gif);
+    background-position: left top, center center, center center;
+    background-repeat: repeat, no-repeat, no-repeat;
+    background-attachment: fixed, fixed, fixed;
+    background-size: 4px 4px, 100% 100%, cover;
+    transition: background-image 1s ease;
+}
+.artisttag {
+    padding: 0.5vw;
+    margin-right: 0.5vw;
+    border: 1px solid #666;
+    float: left;
+    font-size: calc((1vw + 1vh + 1vmin) / 3);
+    backdrop-filter: blur(2px);
+    background: rgba(0, 0, 0, 0.25);
+}
+.stats {
+    float: left;
+}
+.statsitem {
+    font-size: calc((1vw + 1vh + 1vmin) / 3);
+    float: left;
+    padding: 5px;
+}
