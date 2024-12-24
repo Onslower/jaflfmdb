@@ -52,13 +52,12 @@ const fetchData = async () => {
         document.getElementById("track_count").innerHTML = track_count;
         document.getElementById("album_count").innerHTML = album_count;
 
-        var artist_url = "https://ws.audioscrobbler.com/2.0/?method=artist.getinfo&format=json&artist=" + artist + "&api_key=" + LASTFM_API_KEY + "&user=" + username
-        artist_url = artist_url.replace("#", "%23");
+        var artist_url = "https://ws.audioscrobbler.com/2.0/?method=artist.getinfo&format=json&artist=" + encodeURIComponent(artist) + "&api_key=" + LASTFM_API_KEY + "&user=" + username
+        console.log(artist_url);
         const artist_response = await fetch(artist_url);
         const artist_json = await artist_response.json();
-
-        console.log(artist_url);
         console.log(artist_json);
+
         var artist_imageLink = artist_json.artist.image[5]["#text"].replace("300x300", "");
         var artist_bio = artist_json.artist.bio.content;
         var artist_listeners = artist_json.artist.stats.listeners;
@@ -67,22 +66,18 @@ const fetchData = async () => {
         var artist_userplaycount_percentage = artist_userplaycount / artist_playcount * 100;
         var artist_userplaycount_percentage_rounded = Math.round(artist_userplaycount_percentage * 10000) / 10000;
 
-        var album_url = "https://ws.audioscrobbler.com/2.0/?method=album.getinfo&format=json&artist=" + artist + "&album=" + album + "&api_key=" + LASTFM_API_KEY + "&user=" + username
-        album_url = album_url.replace("#", "%23");
+        var album_url = "https://ws.audioscrobbler.com/2.0/?method=album.getinfo&format=json&artist=" + encodeURIComponent(artist) + "&album=" + encodeURIComponent(album) + "&api_key=" + LASTFM_API_KEY + "&user=" + username
+        console.log(album_url);
         const album_response = await fetch(album_url);
         const album_json = await album_response.json();
-
-        console.log(album_url);
         console.log(album_json);
         var album_userplaycount = album_json.album.userplaycount;
 
 
-        var track_url = "https://ws.audioscrobbler.com/2.0/?method=track.getinfo&format=json&artist=" + artist + "&track=" + track + "&api_key=" + LASTFM_API_KEY + "&user=" + username
-        track_url = track_url.replace("#", "%23");
+        var track_url = "https://ws.audioscrobbler.com/2.0/?method=track.getinfo&format=json&artist=" + encodeURIComponent(artist) + "&track=" + encodeURIComponent(track) + "&api_key=" + LASTFM_API_KEY + "&user=" + username
+        console.log(track_url);
         const track_response = await fetch(track_url);
         const track_json = await track_response.json();
-
-        console.log(track_url);
         console.log(track_json);
 
         var track_userplaycount = track_json.track.userplaycount;
