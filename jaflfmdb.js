@@ -32,7 +32,7 @@ const fetchData = async () => {
         relative_time = timeDifference(now_utc, unix_date)
     }
 
-    document.getElementById("scrobbling").innerHTML = (relative_time != null) ? "scrobbled " + relative_time : "is scrobbling now..."
+    document.getElementById("scrobbling").innerHTML = (relative_time != null) ? "...scrobbled " + relative_time : "...is scrobbling now"
 
     const currentTrackMbid = last_track.mbid;
 
