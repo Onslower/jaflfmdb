@@ -32,6 +32,8 @@ const fetchData = async () => {
         relative_time = timeDifference(now_utc, unix_date)
     }
 
+    document.getElementById("scrobbling").innerHTML = (relative_time != null) ? "scrobbled " + relative_time : "is scrobbling now..."
+
     const currentTrackMbid = last_track.mbid;
 
     if (lastTrackName != track || lastTrackMbid != currentTrackMbid)
@@ -46,8 +48,6 @@ const fetchData = async () => {
         document.getElementById("album").innerHTML = album;
         document.getElementById("artist").innerHTML = artist;
         document.getElementById("albumimg").src=album_imageLink;
-
-        document.getElementById("scrobbling").innerHTML = (relative_time != null) ? "scrobbled " + relative_time : "is scrobbling now..."
 
         document.title = track + " - " + artist;
 
@@ -163,9 +163,6 @@ function timeDifference(current, previous) {
     var msPerYear = msPerDay * 365;
 
     var elapsed = current - (previous * 1000);
-    console.log(elapsed);
-    console.log(current);
-    console.log(previous * 1000);
 
     if (elapsed < msPerMinute) {
          return Math.round(elapsed/1000) + ' seconds ago';   
