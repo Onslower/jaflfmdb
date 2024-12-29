@@ -23,11 +23,20 @@
     float: left;
     font-size: calc((1vw + 1vh + 1vmin) / 3);
 }
+.scrobbling {
+    padding: 5px;
+    float: left;
+    font-size: calc((1vw + 1vh + 1vmin) / 3);
+}
+
 .responsive_album {
     width: 100%;
     min-width: 50px;
     height: auto;
     filter: drop-shadow(black 1vw 1vh 10px);
+    -webkit-transition: all .3s ease-in-out;
+    -moz-transition: all .3s ease-in-out;
+    transition: all .3s ease-in-out;
 }
 .maincontainer {
     position: absolute;
@@ -51,21 +60,21 @@
 }
 h1 {
     color: black;
-    text-shadow: 0 0 2px yellow, 0 0 4px orange, 0 0 8px red;
+    text-shadow: 0 0 2px rgb(255, 255, 255), 0 0 4px rgb(150, 150, 150), 0 0 8px rgb(100, 100, 100);
     vertical-align: text-bottom;
     font-size: 30px;
     font-size: calc(1vw + 1vh + 1vmin);
 }
 h2 {
     color: black;
-    text-shadow: 0 0 2px yellow, 0 0 4px orange, 0 0 8px red;
+    text-shadow: 0 0 2px rgb(255, 255, 255), 0 0 4px rgb(150, 150, 150), 0 0 8px rgb(100, 100, 100);
     vertical-align: text-bottom;
-    font-size: 20px;
+    font-size: 25px;
     font-size: calc((1vw + 1vh + 1vmin) / 1.5);
 }
 h3 {
     color: black;
-    text-shadow: 0 0 2px yellow, 0 0 4px orange, 0 0 8px red;
+    text-shadow: 0 0 2px rgb(255, 255, 255), 0 0 4px rgb(150, 150, 150), 0 0 8px rgb(100, 100, 100);
     vertical-align: text-bottom;
     font-size: 10px;
     font-size: calc((1vw + 1vh + 1vmin) / 2);
@@ -93,10 +102,20 @@ body {
     background: rgba(0, 0, 0, 0.25);
 }
 .stats {
-    float: left;
+    font-size: calc((1vw + 1vh + 1vmin) / 3);
+    float: right;
 }
 .statsitem {
-    font-size: calc((1vw + 1vh + 1vmin) / 3);
     float: left;
-    padding: 5px;
+    padding: 0.5vw;
+    margin-right: 0.5vw;
+    backdrop-filter: blur(2px);
+    background: rgba(0, 0, 0, 0.25);
+}
+.statsitemheader
+{
+    text-align: right;
+}.statsitemcount
+{
+    text-align: right;
 }

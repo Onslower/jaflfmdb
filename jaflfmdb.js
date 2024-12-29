@@ -19,6 +19,19 @@ const fetchData = async () => {
     var artist = last_track.artist.name;
     var album = last_track.album["#text"];
     var album_imageLink = last_track.image[3]["#text"].replace("300x300", "");
+
+    let relative_time = null;
+
+    var date = new Date();
+    var now_utc = Date.UTC(date.getUTCFullYear(), date.getUTCMonth(),
+                date.getUTCDate(), date.getUTCHours(),
+                date.getUTCMinutes(), date.getUTCSeconds());
+
+    if (last_track.date) {
+        var unix_date = last_track.date.uts
+        relative_time = timeDifference(now_utc, unix_date)
+    }
+
     const currentTrackMbid = last_track.mbid;
 
     if (lastTrackName != track || lastTrackMbid != currentTrackMbid)
@@ -33,6 +46,8 @@ const fetchData = async () => {
         document.getElementById("album").innerHTML = album;
         document.getElementById("artist").innerHTML = artist;
         document.getElementById("albumimg").src=album_imageLink;
+
+        document.getElementById("scrobbling").innerHTML = (relative_time != null) ? "scrobbled " + relative_time : "is scrobbling now..."
 
         document.title = track + " - " + artist;
 
@@ -137,6 +152,44 @@ async function getUser(username) {
     const userInfoResponse = await fetch(userInfoUrl);
     const userInfoJson = await userInfoResponse.json();
     return userInfoJson;
+}
+
+function timeDifference(current, previous) {
+
+    var msPerMinute = 60 * 1000;
+    var msPerHour = msPerMinute * 60;
+    var msPerDay = msPerHour * 24;
+    var msPerMonth = msPerDay * 30;
+    var msPerYear = msPerDay * 365;
+
+    var elapsed = current - (previous * 1000);
+    console.log(elapsed);
+    console.log(current);
+    console.log(previous * 1000);
+
+    if (elapsed < msPerMinute) {
+         return Math.round(elapsed/1000) + ' seconds ago';   
+    }
+
+    else if (elapsed < msPerHour) {
+         return Math.round(elapsed/msPerMinute) + ' minutes ago';   
+    }
+
+    else if (elapsed < msPerDay ) {
+         return Math.round(elapsed/msPerHour ) + ' hours ago';   
+    }
+
+    else if (elapsed < msPerMonth) {
+        return 'approximately ' + Math.round(elapsed/msPerDay) + ' days ago';   
+    }
+
+    else if (elapsed < msPerYear) {
+        return 'approximately ' + Math.round(elapsed/msPerMonth) + ' months ago';   
+    }
+
+    else {
+        return 'approximately ' + Math.round(elapsed/msPerYear ) + ' years ago';   
+    }
 }
 
 $(function() {
