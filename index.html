@@ -10,6 +10,7 @@
         <meta name="viewport" content="width=device-width, initial-scale=1">
     </head>
 <body id='thebody'>
+   
     <div class="headercontainer">
         <img id='avatarimg' src="./images/static_noise.gif" class="avatar">
         <div id='lastfmuser' class="userdata">Unknown user</div>
@@ -40,7 +41,15 @@
                 <div id='tagcontainer'></div>
             </div>
         </div>
+
+        <label for="toggle" class="toggle-label">info</label>
+        <input type="checkbox" id="toggle" hidden>
+
+        <div class="content">
         <div id='artwork' class='artworkclass'></div>
+        <a id="goUrl" href="https://www.last.fm" target="_blank">Go</a>
+        </div>       
+
     </div>
     <div style="display: none;">
         <p id='artist_listeners'>artist_listeners</p> -

@@ -4,6 +4,7 @@ const urlParams = new URLSearchParams(queryString);
 const username = urlParams.get('username')
 const useai = urlParams.get('useai')
 const useArtist = 1;
+const useAlbum = 1;
 const useScene = 1;
 const useStyle = 1;
 const useSeasoning = 1;
@@ -46,6 +47,13 @@ const fetchData = async () => {
 
     if (lastTrackName != track || lastTrackMbid != currentTrackMbid)
     {
+        var bla = "lastTrackName: " + lastTrackName;
+        bla += "\r\ntrack: " + track;
+        bla += "\r\nlastTrackMbid: " + lastTrackMbid
+        bla += "\r\ncurrentTrackMbid: " + currentTrackMbid;
+
+        console.log(bla);
+
         console.log(recenttracks_url);
         console.log(recenttracks_json);
 
@@ -142,18 +150,25 @@ const fetchData = async () => {
         var imageDescription = "";
         imageDescription += getTrack(track);
         imageDescription += getArtist(artist);
+        imageDescription += getAlbum(album);
         imageDescription += getScene();
         imageDescription += getStyle();
         imageDescription += getWhere();
         imageDescription += getSeasoning();
 
         var encodedImageDescription = encodeURIComponent(imageDescription);
-        console.log(imageDescription);
+        var pollinationsModel = getPollinationsModel();
+
+        console.log(imageDescription + " - using model: " + pollinationsModel);
+
+
+        var pollinationsUrl = "https://pollinations.ai/p/" + encodedImageDescription + "?seed=" + getSeed() + "&nologo=true&model=" + pollinationsModel + "&width=" + width + "&height=" + height;
 
         if (useai == true)
         {
-            document.getElementById("artwork").innerHTML = imageDescription;
-            document.getElementById("thebody").style.backgroundImage = "url(./images/transparant_1x1.png), url('./images/transparant_1x1.png'), url(https://pollinations.ai/p/" + encodedImageDescription + "?seed=" + getSeed() + "&nologo=true&model=flux&width=" + width + "&height=" + height + ")";
+            document.getElementById("artwork").innerHTML = imageDescription + " - using model: " + pollinationsModel;
+            document.getElementById("goUrl").href=pollinationsUrl;
+            document.getElementById("thebody").style.backgroundImage = "url(./images/transparant_1x1.png), url('./images/transparant_1x1.png'), url(" + pollinationsUrl + ")";
         }
         else
         {
@@ -231,6 +246,15 @@ function getTrack(track)
     return getFiltered(track).trimEnd();
 }
 
+function getAlbum(album)
+{
+    if (useAlbum != 1)
+        return "";
+
+    return ', ' + getFiltered(album).trimEnd();
+}
+
+
 function getArtist(artist)
 {
     if (useArtist != 1)
@@ -264,6 +288,19 @@ function getFiltered(filterMe)
     return filtered;
 }
 
+function getPollinationsModel()
+{
+    const array = [
+        "flux",
+        // "kontext", limited to users in the seed tier or higher
+        "turbo",
+        // "gptimage", limited to users in the seed tier or higher
+    ];
+    const randomValue = array[Math.floor(Math.random() * array.length)];
+    return randomValue;
+}
+
+
 function getStyle()
 {
     const array = [
@@ -282,6 +319,7 @@ function getStyle()
         "Asterix & Obelix cartoon style",
         "Astrophotography style",
         "Bauhaus style",
+        "Back lighting style",
         "Baroque Art style",
         "Biomechanical style",
         "Biomechanical tattoo style",
@@ -302,6 +340,7 @@ function getStyle()
         "Black and Grey tattoo style",
         "Beavis and Butthead cartoon style",
         "Cartoon style",
+        "Chiaroscuro Lighting style",
         "Cinemagraphs photography style",
         "Color Blast photography style",
         "Comic book style",
@@ -322,9 +361,11 @@ function getStyle()
         "Etch and sketch style",
         "Etching style",
         "Egyptian Hieroglyph style",
-        "faded photograph style",
+        "Facade lighting style",
+        "Faded photograph style",
         "Family guy cartoon style",
         "Flat Lay Photography style",
+        "Fill Lighting style",
         "Fingerpainting style",
         "Fresco style",
         "Futurama cartoon style",
@@ -347,6 +388,7 @@ function getStyle()
         "Halftone dot style",
         "Hanna Barbera style",
         "Hatching style",
+        "Hard Lighting style",
         "HDR Photography style",
         "High Key Lighting photography style",
         "Hyperrealism style",
@@ -359,6 +401,7 @@ function getStyle()
         "Japanese Tattoo Style",
         "Joe Bar Team cartoon style",
         "Kaleidoscope Photography style",
+        "Key Lighting style",
         "Kinetic Art style",
         "Land Art style",
         "large halftone dot style",
@@ -378,8 +421,10 @@ function getStyle()
         "Monochrome monitor style",
         "Mosaic art style",
         "Motion Blur Photography style",
+        "Motivated Lighting style",
         "Movie poster style",
         "Mural Painting style",
+        "Negative fill style",
         "Negative Space tattoo style",
         "Night Photography style",
         "Neoclassicism style",
@@ -399,6 +444,7 @@ function getStyle()
         "Quake style",
         "Relief art style",
         "Raytrace style",
+        "Ren and Stimpy style",
         "Renaissance style",
         "Roadrunner cartoon style",
         "Rick and Morty cartoon style",
@@ -406,9 +452,11 @@ function getStyle()
         "Scooby Doo cartoon style",
         "Screen printing style",
         "Screentone texture style",
+        "Side Lighting style",
         "Simpsons cartoon style",
         "Smoke Art Photography style",
         "Snow sculpture style",
+        "Soft Light style",
         "Southpark cartoon style",
         "Spongebob Squarepants cartoon style",
         "Spot Color photography style",
@@ -499,6 +547,7 @@ function getScene()
         "as a computer errormessage",
         "on a backdrop",
         "on a banner",
+        "on a beer coaster",
         "on a billboard",
         "as a blueprint",
         "as a BSOD",
@@ -534,8 +583,6 @@ function getScene()
         "a foggy backlit scene",
         "a geometric drawing",
         "as a glossy magazine photograph",
-        "as a Manga",
-        "as a manual",
         "as a hyperrealist drawing",
         "as a hyperrealist painting",
         "as Illusionistic realism",
@@ -553,6 +600,8 @@ function getScene()
         "on a glossy magazine cover",
         "as a label on a LP",
         "on a led display",
+        "as a Manga",
+        "as a manual",
         "as a Marklin version",
         "as a Meccano version",
         "a minecraft version",
@@ -604,8 +653,6 @@ function getScene()
         "as seen through a visor",
         "as seen through binoculars",
         "as seen through crosshairs",
-        "as seen through the eyes of the predator",
-        "as seen through the eyes of the terminator",
         "a screenshot",
         "a short focal length photo",
         "a sketch",
@@ -619,12 +666,11 @@ function getScene()
         "as a reflection on an eye",
         "as a reflection in a broken mirror",
         "as a reflection on a broken window",
-        "as a reflection in a carmirror",
+        "as a reflection in a car mirror",
         "as reflections in a disco ball",
         "as a reflection in a mirror",
         "as reflections in puddles",
         "as a reflection on an sphere",
-        "as a reflection on an spoon",
         "as a reflection in sunglasses",
         "as a reflection on an window",
         "as televison advertising",
@@ -632,16 +678,10 @@ function getScene()
         "as toy soldiers",
         "as toys",
         "a topdown view",
-        "as a train with graffiti",
         "as a Trix construction set",
         "on a video tape",
         "as a wanted poster",
         "as a warning sign",
-        "as a parental advisory warning",
-        "with Predator vision",
-        "with Robocop vision",
-        "with Terminator vision",
-        "wrapped in a newspaper",
         "Zoomed in",
         "Zoomed out",
     ];
@@ -657,28 +697,36 @@ function getWhere()
     const array = [
         // Cities
         "in Amsterdam",
+        "in Angkor",
+        "in Athens",
         "in Basel",
         "in Barcelona",
         "in Beirut",
         "in Berlin",
         "in Bangkok",
-        "in Bourg-Saint-Maurice",
+        "in Beijing",
         "in Cape Town",
         "in Casablanca",
+        "in Carthage",
         "in Chicago",
         "in Chernobyl",
+        "in Cusco",
         "in Edinburgh",
+        "in Ephesus",
         "in Essaouira",
         "in Geiranger",
         "in Geneva",
         "in Gruyères",
         "in Havana",
+        "in Hong Kong",
+        "in Istanbul",
         "in La Paz",
         "in Las Vegas",
         "In London",
         "in Los Angeles",
         "in Los Santos",
         "in Lucerne",
+        "in Luxor",
         "in Malaga",
         "in Marrakesh",
         "in Miami",
@@ -690,12 +738,15 @@ function getWhere()
         "in Paris",
         "in Pisa",
         "in Pompeii",
+        "in Rome",
         "in Ronda",
         "in San Francisco",
         "in Seattle",
+        "in Seoul",
         "in Schaffhausen",
         "in Sydney",
         "in Trondheim",
+        "in Tokyo",
         "in Val-dIsere",
         "in Venice",
         "in Willemstad",
@@ -750,8 +801,10 @@ function getWhere()
         "in Bedrock",
         "at Bikini Bottom",
         "in Camelot",
+        "in Castle Rock",
         "in Chalmuns Spaceport Cantina",
         "at Cybertron",
+        "in Duckburg",
         "in El Dorado",
         "in Elysium",
         "in Emerald City",
@@ -760,6 +813,7 @@ function getWhere()
         "in Gotham City",
         "in Heaven",
         "in Hell",
+        "in Hill Valley",
         "in the first circle of Hell",
         "in the second circle of Hell",
         "in the third circle of Hell",
@@ -774,7 +828,9 @@ function getWhere()
         "in Inception",
         "in Jotunheim",
         "in Liberty City",
+        "in Los Santos",
         "in Mag Mell",
+        "in Metropolis",
         "in Mega City",
         "in Mos Eisley",
         "in Mos Espa",
@@ -782,12 +838,19 @@ function getWhere()
         "in Neverland",
         "in Niflheim",
         "in Niflhel",
+        "in Paradise City",
         "in Purgatory",
+        "in Quahog",
         "in Rivendell",
+        "in San Andreas",
+        "in San Fiero",
+        "in Shangri-La",
         "in Shawshank prison",
         "in South Park",
+        "in Springfield",
         "at Styx",
         "in Tech Duinn",
+        "in Toontown",
         "in Twin Peaks",
         "in Valhalla",
         "in Vanaheim",
@@ -796,36 +859,65 @@ function getWhere()
         "in Wonderland",
 
         // Environments / Biomes
+        "in an arctic tundra",
+        "on the beach",
         "in a black hole",
+        "in a bog",
+        "in a boreal forest",
         "in a burned forrest",
         "at a castle",
+        "in a chaparral",
+        "at the cliffs",
         "in a crater",
         "at a crimescene",
+        "in a desert",
         "in a digital world",
         "in a dome",
+        "on a dome",
+        "in the dunes",
+        "in an elfin woodland",
         "at a factory",
+        "in the flatlands",
         "in a forest",
         "in a futuristic city",
         "at a German Oktoberfest",
         "in a geodesic dome",
         "in a gorge",
+        "in a grassland",
         "at a graveyard",
+        "in a gravelpit",
+        "in a heath",
         "at a heavy metal concert",
         "at a heavy metal festival",
+        "in a Mangrove swamp",
         "in a maze",
         "in a mirror maze",
         "at a Nordic Fjord",
+        "in the mountains",
         "in a nuclear wasteland",
         "on a pier",
         "in a post apocalyptic world",
+        "in a salt marsh",
+        "in the salt flats",
+        "in a savanna",
         "in a room a thousand years wide",
         "in a rubberroom",
+        "in a taiga",
+        "in a Temperate evergreen forest",
+        "in a temparate forest",
+        "in a temperate woodland and shrubland",
         "in a tube",
+        "in a tundra",
         "in a tunnel",
+        "in a tropical dry forest",
+        "in a tropical rain forest",
         "in the Jungle",
         "in the Sahara",
+        "in the sand dunes",
         "at a vantage point",
         "in the void",
+        "in the wetlands",
+        "in a xeric shrubland",
         "in Zion",
 
         // At notable places
@@ -860,6 +952,7 @@ function getWhere()
         "at Chartres Cathedral",
         "at Chichen Itza",
         "at Christ the Redeemer",
+        "at the Church of Hallgrimur",
         "at Chysler building",
         "at Cologne Cathedral",
         "at Colosseum",
@@ -871,7 +964,9 @@ function getWhere()
         "at Denali National Park",
         "at Doges Palace",
         "at Door to Hell in Turkmenistan",
+        "at Drachenburg Castle",
         "at Easter Island",
+        "at Eltz Castle",
         "at Empire State Building",
         "at Fiordland national park",
         "at Fly Geyser",
@@ -885,8 +980,11 @@ function getWhere()
         "at Grossglockner",
         "at Guilin and Lijiang river national park",
         "at Guggenheim Museum",
+        "at Heidelberg Castle",
         "at Hellfest",
         "at Himeji Castle",
+        "at Hohenschwangau Castle",
+        "at Hohenzollern Castle",
         "at Horseshoe Bend",
         "at Huacachina",
         "at Iguazu and Igacu national parks",
@@ -909,7 +1007,8 @@ function getWhere()
         "at Milford Sound",
         "at Middle Earth",
         "at Monument Valley",
-        "at Mono lake, California",
+        "at Mono lake - California",
+        "at Moritzburg Castle",
         "at Mount Desert Island",
         "at Mount Everest",
         "at Mount Fuji",
@@ -928,6 +1027,7 @@ function getWhere()
         "at Las Salinas Grandes",
         "at Le Mont Saint-Michel",
         "at Lencois Maranhenses Sand Dunes",
+        "at Lichtenstein Castle",
         "at Loch Ness",
         "at Notre Dame",
         "at Oatman",
@@ -942,6 +1042,8 @@ function getWhere()
         "at Rainbow Mountains of Peru",
         "at Rangiroa",
         "at Rauðasandur",
+        "at Red Rocks",
+        "at Red Rocks Amphitheatre",
         "at Rhossili Bay",
         "at Ruby Beach",
         "at Sagarmatha national park",
@@ -951,6 +1053,8 @@ function getWhere()
         "at Santa Monica Pier",
         "at Seljalandsfoss waterfall",
         "at Scala dei Turchi",
+        "at Schwerin Castle",
+        "at Sigmaringen Castle",
         "at Simien mountains national park",
         "at Skellig Michael",
         "at Snowdonia national park",
@@ -982,7 +1086,6 @@ function getWhere()
         "at the Gates",
         "at the Gates of Hell",
         "at the Gateway Arch",
-        "at the Gherkin",
         "at the Grand Canyon",
         "at the Great Barrier Reef",
         "at the Great Mosque of Djenné",
@@ -1112,7 +1215,7 @@ function getWhere()
         "in the 1970s",
         "in the 1980s",
         "in the 1990s",
-        "on D-Day",
+        // "on D-Day",
         
         // Film / TV related places
         "in the Shire",
@@ -1120,11 +1223,11 @@ function getWhere()
         "on Alderaan",
         "on Andoria",
         "on Arrakis",
-        "on Battlestar Galactica",
+        // "on Battlestar Galactica",
         "on Corellia",
         "on Coruscant",
         "on Crait",
-        "on Discovery 1",
+        // "on Discovery 1",
         "on Dagobah",
         "on Earth",
         "on Elysium",
@@ -1145,25 +1248,25 @@ function getWhere()
         "on Trill",
         "on Yavin 4",
         "on Vulcan",
-        "on the Deathstar",
-        "on the Kessel run",
-        "on a Cheyenne Drop Ship",
-        "on a Cylon Raider",
-        "on a Prawn mothership",
-        "on the Event Horizon",
-        "on an Imperial Star Destroyer",
-        "on the Jupiter Mining Corporation spaceship Red Dwarf",
-        "on a Klingon Bird of Prey",
-        "on the Millennium Falcon",
-        "on a Nubian Royal Starship",
-        "on Pandora",
-        "on the Rocinante",
-        "on the Starbug",
-        "on the TARDIS",
-        "on the USCSS Nostromo",
-        "on the USS Enterprise",
-        "on the The Ranger from Interstellar",
-        "on the Razor Crest",
+        //"on the Deathstar",
+        //"on the Kessel run",
+        //"on a Cheyenne Drop Ship",
+        //"on a Cylon Raider",
+        //"on a Prawn mothership",
+        // "on the Event Horizon",
+        // "on an Imperial Star Destroyer",
+        // "on the Jupiter Mining Corporation spaceship Red Dwarf",
+        // "on a Klingon Bird of Prey",
+        // "on the Millennium Falcon",
+        // "on a Nubian Royal Starship",
+        // "on Pandora",
+        // "on the Rocinante",
+        // "on the Starbug",
+        // "on the TARDIS",
+        // "on the USCSS Nostromo",
+        // "on the USS Enterprise",
+        // "on the The Ranger from Interstellar",
+        // "on the Razor Crest",
     ];
     const randomValue = array[Math.floor(Math.random() * array.length)];
     return ', ' + randomValue;
@@ -1179,6 +1282,7 @@ function getSeasoning()
         "black",
         "blue",
         "camouflage",
+        "camo pattern",
         "green",
         "grey",
         "orange",
@@ -1199,6 +1303,7 @@ function getSeasoning()
         "circles",
         "cracks",
         "crystals",
+        "diamond plate",
         "dotted",
         "double helix",
         "dunes",
@@ -1226,48 +1331,92 @@ function getSeasoning()
         "aerogel",
         "activated charcoal",
         "adamantium",
+        "agate",
+        "amber",
+        "amethyst",
+        "asphalt",
+        "bitumen",
+        "bloodstone",
         "bombastium",
+        "bone",
+        "brass",
         "bronze",
         "carbon",
         "ceramic",
+        "cheese",
+        "chocolate",
         "chrome",
+        "chromium",
         "concealed",
         "concrete",
         "copper",
+        "coral",
         "cork",
+        "corn",
         "dark matter",
         "diamond",
         "dilitium",
         "ebony",
         "ember",
+        "emerald",
+        "fabric",
         "glass",
+        "gold",
+        "gravel",
+        "hematite",
+        "hemp",
         "hydrogel",
+        "iron",
         "ivory",
+        "jade",
         "kevlar",
         "kryptonite",
         "lava",
+        "lead",
         "magma",
+        "magnesium",
         "marble",
         "metal",
+        "mercury",
         "milk",
+        "Mycelium",
         "nanotubes",
         "neutron",
         "nitinol",
+        "obsidian",
+        "oil",
+        "onyx",
         "oobleck",
         "ooze",
+        "opal",
+        "oxidized copper",
         "paper",
         "pearl",
         "plastic",
         "porcelain",
         "puss",
+        "pyrite",
+        "quartz",
         "rubber",
+        "ruby",
+        "rust",
+        "sapphire",
+        "silver",
         "stainless steel",
         "stanene",
+        "steel",
+        "stone",
         "sugar",
+        "tarmac",
         "tears",
+        "tin",
+        "titanium",
+        "topaz",
         "weed",
         "wooden",
+        "zircon",
 
+        /* This doesn't work as good as I hoped
         // The 118 elements (because why not?)
         "Hydrogen",
         "Helium",
@@ -1387,6 +1536,7 @@ function getSeasoning()
         "Livermorium",
         "Tennessine",
         "Oganesson",
+        */        
 
         // State or form
         "aether",
@@ -1416,10 +1566,10 @@ function getSeasoning()
         "crying",
         "cryogenic",
         "cubed",
+        "engraved",
         "entombed",
         "damaged",
         "darkened",
-        "deadened",
         "decaying",
         "decomposing",
         "deep",
@@ -1431,6 +1581,7 @@ function getSeasoning()
         "dissolving",
         "distorted",
         "dotted",
+        "drained",
         "dripping",
         "dry",
         "dual",
@@ -1507,6 +1658,7 @@ function getSeasoning()
         "screaming",
         "seeping",
         "separated",
+        "shabby",
         "shadowed",
         "shallow",
         "shattered",
@@ -1525,9 +1677,12 @@ function getSeasoning()
         "square",
         "stacked",
         "stamped",
+        "steaming",
+        "strained",
         "sublimation",
         "supercritical",
         "super natural",
+        "tattered",
         "triangular",
         "triple",
         "vapour",
@@ -1550,36 +1705,6 @@ function getSeasoning()
         "treatening clouds",
         "twilight",
         "whirlpool",
-
-        // Film / TV related
-        "Alien",
-        "Aliens",
-        "An American Wherewolf in London",
-        "Breaking Bad",
-        "Better Call Saul",
-        "Carrie",
-        "Chernobyl",
-        "Christine",
-        "Das Boot",
-        "Dexter",
-        "Evil Dead",
-        "Dawn of the Dead",
-        "Dirty Harry",
-        "Frankenstein",
-        "Gone in 60 seconds",
-        "Grindhouse",
-        "Jaws",
-        "Hellraiser",
-        "Invasion of the Body Snatchers",
-        "Prometeus",
-        "Nightmare on Elmstreet",
-        "Nosferatu",
-        "Slither",
-        "The A-team",
-        "The Fly",
-        "The Shining",
-        "The Silence of the Labs",
-        "Tremors",
 
         // Just for Fun 
         "Aurora",
@@ -1617,6 +1742,7 @@ function getSeasoning()
         "on Mars",
         "on Mount Vesuvius",
         "Nyx",
+        "Potholes",
         "Rain",
         "Raining blood",
         "in the sewer",
