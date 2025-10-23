@@ -103,8 +103,8 @@ body {
 }
 .artworkclass {
     padding: 5px;
-    font-size: calc((1vw + 1vh + 1vmin) / 3);
-    background: rgba(0, 0, 0, 0.75);
+    /* font-size: calc((1vw + 1vh + 1vmin) / 3);
+    background: rgba(0, 0, 0, 0.75); */
 }
 .stats {
     font-size: calc((1vw + 1vh + 1vmin) / 3);
@@ -123,4 +123,36 @@ body {
 }.statsitemcount
 {
     text-align: right;
+}
+/* Hidden by default */
+.content {
+    font-size: calc((1vw + 1vh + 1vmin) / 3);
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 0.35s ease, padding 0.35s ease;
+    /* border: 1px solid #ccc; */
+    background: rgba(0, 0, 0, 0.5);
+    padding: 0 12px;            /* side padding when collapsed */
+    border-radius: 6px;
+    margin-top: 8px;
+}
+
+/* Show when the checkbox is checked.
+   Use "~" (general sibling) so the content can be after the input, not just immediately after. */
+#toggle:checked ~ .content {
+  max-height: 600px;          /* big enough to reveal your content */
+  padding: 12px;              /* restore full padding */
+}
+
+/* Clickable label styles */
+.toggle-label {
+  display: inline-block;
+  font-size: calc((1vw + 1vh + 1vmin) / 3);
+  margin-top: 8px;
+  padding: 8px 12px;
+  background: rgba(0, 0, 0, 0.5);
+  color: #fff;
+  border-radius: 6px;
+  cursor: pointer;
+  user-select: none;
 }
